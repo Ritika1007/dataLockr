@@ -1,5 +1,11 @@
-<!-- Displaying files in a subfolder -->
-<h2>{{ subfolder.name }}</h2>
+<!-- Display the file creation form -->
+<form method="post" action="{% url 'subfolder' subfolder.name %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Create File</button>
+</form>
+
+<!-- Display existing files -->
 {% for file in page_obj %}
   <a href="{% url 'file' file.id %}">{{ file.name }}</a><br>
 {% endfor %}

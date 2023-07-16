@@ -1,3 +1,4 @@
+{% load json_filter %}
 <!-- Displaying file content -->
 <h2>{{ file.name }}</h2>
-<p>{{ file.content }}</p>
+<pre>{{ file.content|format_json }}</pre>

@@ -1,6 +1,13 @@
-<!-- Displaying subfolders -->
+<!-- Display the subfolder creation form -->
+<form method="post" action="{% url 'databag' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Create Subfolder</button>
+</form>
+
+<!-- Display existing subfolders -->
 {% for subfolder in page_obj %}
-  <a href="{% url 'subfolder' subfolder.id %}">{{ subfolder.name }}</a><br>
+  <a href="{% url 'subfolder' subfolder.name %}">{{ subfolder.name }}</a><br>
 {% endfor %}
 
 <!-- Pagination links -->
