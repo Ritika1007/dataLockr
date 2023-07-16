@@ -67,3 +67,26 @@ def file_view(request, file_id):
     context = {'file': file}
     return render(request, 'dataApp/file.html', context)
 
+############################
+#delete
+############################
+def delete_subfolder(request, subfolder_id):
+    subfolder = get_object_or_404(Subfolder, pk=subfolder_id)
+
+    if request.method == 'POST':
+        # Delete all files within the subfolder
+        subfolder.jsonfile_set.all().delete()
+
+        # Delete the subfolder itself
+        subfolder.delete()
+
+    return redirect('databag')
+
+def delete_file(request, file_id):
+    file = get_object_or_404(JSONFile, pk=file_id)
+
+    if request.method == 'POST':
+        # Delete the file
+        file.delete()
+
+    return redirect('subfolder', subfolder_id=file.subfolder.name)
