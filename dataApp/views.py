@@ -3,6 +3,8 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from .models import Subfolder, JSONFile
 from .forms import SubfolderForm,JSONFileForm
+from django.core.exceptions import ValidationError
+import json
 
 
 ############################
@@ -90,3 +92,24 @@ def delete_file(request, file_id):
         file.delete()
 
     return redirect('subfolder', subfolder_id=file.subfolder.name)
+
+############################
+#update
+############################
+
+def edit_file(request, file_id):
+    file = get_object_or_404(JSONFile, pk=file_id)
+
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        try:
+            json.loads(content)
+            JSONFile.objects.filter(id=file_id).update(content=content)
+            return redirect('subfolder', subfolder_id=file.subfolder.name)
+        except json.JSONDecodeError:
+            error_message = "Invalid JSON format"
+            return render(request, 'dataApp/file.html', {'file': file, 'error_message': error_message})
+    else:
+        content = file.content
+
+    return render(request, 'dataApp/file.html', {'file': file, 'content': content})

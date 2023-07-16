@@ -1,4 +1,27 @@
 {% load json_filter %}
+{% load static %}
+
+
 <!-- Displaying file content -->
 <h2>{{ file.name }}</h2>
-<pre>{{ file.content|format_json }}</pre>
+
+{% if error_message %}
+  <p class="error-message">{{ error_message }}</p>
+{% endif %}
+
+<div id="file-content">
+  <pre>{{ file.content|format_json }}</pre>
+  <button id="edit-button" onclick="toggleEdit()">Edit</button>
+</div>
+
+<div id="edit-form" style="display: none;">
+  <form method="post" action="{% url 'edit_file' file.id %}">
+    {% csrf_token %}
+    <textarea name="content" rows=10>{{ file.content }}</textarea>
+    <button type="submit">Save</button>
+    <button type="button" onclick="toggleEdit()">Cancel</button>
+  </form>
+</div>
+
+
+<script src="{% static 'dataApp/js/main.js' %}"></script>
