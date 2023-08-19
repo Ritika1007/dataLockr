@@ -5,12 +5,14 @@ from .models import Subfolder, JSONFile
 from .forms import SubfolderForm,JSONFileForm
 from django.core.exceptions import ValidationError
 import json
+from django.contrib.auth.decorators import login_required
 
 
 ############################
 #CRUD
 ############################
 
+@login_required(login_url='/login')
 def databag_view(request):
     ############################
     #Create
@@ -35,6 +37,7 @@ def databag_view(request):
     context = {'form': form, 'page_obj': page_obj}
     return render(request, 'dataApp/databag.html', context)
 
+@login_required(login_url='/login')
 def subfolder_view(request, subfolder_id):
 
     subfolder = get_object_or_404(Subfolder, pk=subfolder_id)
@@ -63,7 +66,7 @@ def subfolder_view(request, subfolder_id):
     context = {'subfolder': subfolder, 'form': form, 'page_obj': page_obj}
     return render(request, 'dataApp/subfolder.html', context)
 
-
+@login_required(login_url='/login')
 def file_view(request, file_id):
     file = get_object_or_404(JSONFile, pk=file_id)
     context = {'file': file}
@@ -72,6 +75,7 @@ def file_view(request, file_id):
 ############################
 #delete
 ############################
+@login_required(login_url='/login')
 def delete_subfolder(request, subfolder_id):
     subfolder = get_object_or_404(Subfolder, pk=subfolder_id)
 
@@ -84,6 +88,7 @@ def delete_subfolder(request, subfolder_id):
 
     return redirect('databag')
 
+@login_required(login_url='/login')
 def delete_file(request, file_id):
     file = get_object_or_404(JSONFile, pk=file_id)
 
@@ -97,6 +102,7 @@ def delete_file(request, file_id):
 #update
 ############################
 
+@login_required(login_url='/login')
 def edit_file(request, file_id):
     file = get_object_or_404(JSONFile, pk=file_id)
 
