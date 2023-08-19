@@ -4,9 +4,13 @@ from rest_framework import status
 from dataApp.models import Subfolder,JSONFile
 from .serializers import SubfolderSerializer,JSONFileSerializer
 import json
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 class SubfolderAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         queryset = Subfolder.objects.all()
@@ -29,6 +33,8 @@ class SubfolderAPIView(APIView):
         
         
 class JSONFileAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def get_subfolder(self, subfolder_id):
         try:
