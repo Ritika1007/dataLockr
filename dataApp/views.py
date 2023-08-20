@@ -6,6 +6,7 @@ from .forms import SubfolderForm,JSONFileForm
 from django.core.exceptions import ValidationError
 import json
 from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.models import User
 
 
 ############################
@@ -17,11 +18,15 @@ def databag_view(request):
     ############################
     #Create
     ############################
+    # username = request.user.username  
+    # user = User.objects.get(username=username)
+    
     if request.method == 'POST':
         form = SubfolderForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
-            Subfolder.objects.create(name=name)
+            
+            Subfolder.objects.create(user=request.user, name=name)
             return redirect('databag')
     else:
         form = SubfolderForm()
@@ -29,7 +34,7 @@ def databag_view(request):
     ############################
     #retrieve
     ############################
-    subfolders_list = Subfolder.objects.order_by('name')  # Order the subfolders by name
+    subfolders_list = Subfolder.objects.filter(user=request.user).order_by('name')  # Order the subfolders by name
     paginator = Paginator(subfolders_list, 10)  # Display 10 subfolders per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -96,7 +101,7 @@ def delete_file(request, file_id):
         # Delete the file
         file.delete()
 
-    return redirect('subfolder', subfolder_id=file.subfolder.name)
+    return redirect('subfolder', subfolder_id=file.subfolder.id)
 
 ############################
 #update
@@ -111,7 +116,7 @@ def edit_file(request, file_id):
         try:
             json.loads(content)
             JSONFile.objects.filter(id=file_id).update(content=content)
-            return redirect('subfolder', subfolder_id=file.subfolder.name)
+            return redirect('subfolder', subfolder_id=file.subfolder.id)
         except json.JSONDecodeError:
             error_message = "Invalid JSON format"
             return render(request, 'dataApp/file.html', {'file': file, 'error_message': error_message})
