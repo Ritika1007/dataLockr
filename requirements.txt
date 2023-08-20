@@ -10,5 +10,6 @@ djangorestframework==3.14.0
 Markdown==3.4.3
 pycparser==2.21
 pytz==2023.3
+rest-framework-simplejwt==0.0.2
 sqlparse==0.4.4
 typing_extensions==4.7.1
