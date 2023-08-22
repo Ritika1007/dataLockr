@@ -16,6 +16,8 @@ class JSONFile(models.Model):
     content = models.TextField()
     subfolder = models.ForeignKey(Subfolder, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ('name','subfolder')
 
     def __str__(self):
         return self.name

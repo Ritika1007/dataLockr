@@ -13,12 +13,13 @@ class SubfolderAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        queryset = Subfolder.objects.all()
+        # queryset = Subfolder.objects.all()
+        queryset =  Subfolder.objects.filter(user=request.user).order_by('name')
         serializer = SubfolderSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = SubfolderSerializer(data=request.data)
+        serializer = SubfolderSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -26,6 +27,9 @@ class SubfolderAPIView(APIView):
     def delete(self, request, pk, format=None):
         try:
             subfolder = Subfolder.objects.get(pk=pk)
+            if subfolder.user != request.user:
+                return Response({"error": "You do not have permission to delete this subfolder."}, status=status.HTTP_403_FORBIDDEN)
+                
             subfolder.delete()
             return Response({"message": "Subfolder deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
         except Subfolder.DoesNotExist:
@@ -55,13 +59,19 @@ class JSONFileAPIView(APIView):
         if file_id is not None:
             # Get details of a specific file in the subfolder
             file_obj = self.get_file(subfolder_id, file_id)
+            
             if file_obj:
+                if file_obj.subfolder.user != request.user:
+                    return Response({"error": "You do not have permission to view this file."}, status=status.HTTP_403_FORBIDDEN)
                 serializer = JSONFileSerializer(file_obj)
                 return Response(serializer.data)
             return Response({"error": "File not found in the specified subfolder."}, status=status.HTTP_404_NOT_FOUND)
         else:
             # List all files in the subfolder
             subfolder = self.get_subfolder(subfolder_id)
+            if subfolder.user != request.user:
+                return Response({"error": "You do not have permission to this subfolder."}, status=status.HTTP_403_FORBIDDEN)
+              
             if subfolder:
                 files = JSONFile.objects.filter(subfolder=subfolder)
                 serializer = JSONFileSerializer(files, many=True)
@@ -70,6 +80,9 @@ class JSONFileAPIView(APIView):
         
     def post(self, request, subfolder_id, format=None):
         subfolder = self.get_subfolder(subfolder_id)
+        if subfolder.user != request.user:
+                return Response({"error": "You do not have permission to create file in this subfolder."}, status=status.HTTP_403_FORBIDDEN)
+              
         if subfolder:
             # Pass the subfolder instance to the serializer during creation
             serializer = JSONFileSerializer(data=request.data, context={'subfolder': subfolder})
@@ -81,7 +94,13 @@ class JSONFileAPIView(APIView):
     
     def put(self, request, subfolder_id, file_id, format=None):
         file_obj = self.get_file(subfolder_id, file_id)
+        
+          
         if file_obj:
+            
+            if file_obj.subfolder.user != request.user:
+                return Response({"error": "You do not have permission to edit this file."}, status=status.HTTP_403_FORBIDDEN)
+          
             # Validate and parse the new content as JSON
             try:
                 new_content = json.loads(request.data.get('content'))
@@ -99,7 +118,11 @@ class JSONFileAPIView(APIView):
     
     def delete(self, request, subfolder_id, file_id, format=None):
         file_obj = self.get_file(subfolder_id, file_id)
+            
         if file_obj:
+            if file_obj.subfolder.user != request.user:
+                return Response({"error": "You do not have permission to delete this file."}, status=status.HTTP_403_FORBIDDEN)
+            
             file_obj.delete()
             return Response({"message": "File deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
         return Response({"error": "File not found in the specified subfolder."}, status=status.HTTP_404_NOT_FOUND)
