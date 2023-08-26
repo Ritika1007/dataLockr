@@ -137,6 +137,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'dataApp/static'),
+    os.path.join(BASE_DIR, 'registration/static'),
 ]
 
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,5 +12,41 @@
         <button type="submit">Login</button>
     </form>
     <p> If you don't have an account, Please <a href="/register">register</a> instead.</p>
+</body>
+</html> -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'registration/css/style.css' %}">
+</head>
+<body>
+    <section>
+        <div class="container">
+            <div class="user signinBx">
+                <div class="imgBx"><img src="https://t3.ftcdn.net/jpg/05/32/59/44/240_F_532594411_5GAknDpMdA07za4Qt1QsOqbRz2SnDwLR.jpg" alt="" /></div>
+                <div class="formBx">
+                    <form method="post">
+                        {% csrf_token %}
+                        <!-- <h2>DataLockr</h2> -->
+                        <h2>Sign In</h2>
+                        {% for field in login_form %}
+                            <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}"
+                                placeholder="{{ field.label }}" />
+                        {% endfor %}
+                        <input type="submit" value="Login" />
+                        <p class="signup">
+                            Don't have an account? <a href="/register">Sign Up.</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="{% static 'registration/js/script.js' %}"></script>
 </body>
 </html>
