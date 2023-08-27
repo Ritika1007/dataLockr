@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'registration'
 ]
 
+SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware', #manages sessions across requests
     'django.contrib.sessions.middleware.SessionMiddleware',
