@@ -6,6 +6,7 @@ from .forms import SubfolderForm,JSONFileForm
 from django.core.exceptions import ValidationError
 import json
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 # from django.contrib.auth.models import User
 
 
@@ -34,12 +35,21 @@ def databag_view(request):
     ############################
     #retrieve
     ############################
-    subfolders_list = Subfolder.objects.filter(user=request.user).order_by('name')  # Order the subfolders by name
-    paginator = Paginator(subfolders_list, 5)  # Display 10 subfolders per page
+    # subfolders_list = Subfolder.objects.filter(user=request.user).order_by('name')  # Order the subfolders by name
+    # paginator = Paginator(subfolders_list, 5)  # Display 10 subfolders per page
+    # page_number = request.GET.get('page')
+    # page_obj = paginator.get_page(page_number)
+
+    # context = {'form': form, 'page_obj': page_obj}
+    # return render(request, 'dataApp/databag.html', context)
+    
+    query = request.GET.get('search', '')
+    subfolders_list = Subfolder.objects.filter(Q(user=request.user) & Q(name__icontains=query)).order_by('name')
+    paginator = Paginator(subfolders_list, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    context = {'form': form, 'page_obj': page_obj}
+    context = {'form': form, 'page_obj': page_obj, 'search': query}
     return render(request, 'dataApp/databag.html', context)
 
 @login_required(login_url='/login')

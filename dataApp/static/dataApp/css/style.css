@@ -18,6 +18,31 @@
   min-height: 90%;
 }
 
+
+
+/* Set the width of the form container */
+.form-container {
+  width: 95%;
+  overflow: hidden; 
+  /* white-space: nowrap; */
+  display: flex;
+  justify-content: space-between;
+  /* margin-left: auto; 
+  margin-right: 0; */
+}
+
+.form-container .left .right{
+  margin-bottom: 10px;
+}
+
+
+.form-container input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  
+
+}
+
 .new {
   display: flex;
   flex-wrap: wrap;
@@ -30,16 +55,24 @@
 }
 
 .form-row {
-  flex: 1;
   display: flex;
+  justify-content: flex-end;
+  text-align: right;
   align-items: center;
+  height: 100%; 
+  
+  /* width: 30px; */
 }
 
 
 .form-row input, .form-row select, .form-row textarea {
   flex: 1;
   padding: 5px;
+  /* width: 20px; */
 }
+
+
+
 
 button {
   background-color: #7C96AB;
@@ -51,7 +84,10 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  /* background-color: #0056b3; */
+  transform: scale(1);
+  z-index: 5;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -61,7 +97,7 @@ button:hover {
 
 .subfolder-list .flex { 
   display : flex; 
-  gap: 90%;
+  /* gap: 90%; */
   list-style: none;
   padding: 10px;
   width: 100%;
@@ -69,6 +105,10 @@ button:hover {
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
   transition: transform 0.5s;
   justify-content: space-between;
+}
+
+.subfolder-list .flex a{
+  margin-top: 10px;
 }
 
 .subfolder-list .flex:hover {

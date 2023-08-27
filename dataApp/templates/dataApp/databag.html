@@ -1,27 +1,38 @@
 {% extends 'dataApp/index.html' %}
 
 {% block content %}
-  <!-- Display the subfolder creation form -->
-  <!-- <form method="post" action="{% url 'databag' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Create Subfolder</button>
-  </form> -->
 
-  <!-- Display existing subfolders -->
 <div class="subfolder-list">
 
+  <!-- <div class="search-bar">
+    <form class="search" method="get">
+      <input type="text" name="query" placeholder="Search Folders">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div> -->
+  
+  <div class="form-container">
+    <div class="left">
+    <form class="new" method="get" action="{% url 'databag' %}">
+      <div class="form-row">
+      <input type="search" name="search" placeholder="Search Folder">
+    </div>
+      <button type="submit">Search</i></button>
+    </form>
+  </div>
+  <div class="right">
     <form class="new" method="post" action="{% url 'databag' %}">
         {% csrf_token %}
         <div class="form-row">
-          {% for field in form %}
-          <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" placeholder="Add Folder" />
-      {% endfor %}
+            {% for field in form %}
+                <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" placeholder="Create Folder" />
+            {% endfor %}
         </div>
         <!-- Add more input fields here -->
         <button type="submit">Add</button>
     </form>
-
+  </div>
+</div>
 
 
   {% for subfolder in page_obj %}
@@ -39,21 +50,17 @@
 <!-- Pagination links -->
 <div class="pagination">
   <span class="step-links">
-    {% if page_obj.has_previous %}
-      <a href="?page=1">&laquo; first</a>
-    {% endif %}
-
+    <a href="?page=1&search={{ search }}">&laquo; first</a>
+    
     {% for num in page_obj.paginator.page_range %}
       {% if num == page_obj.number %}
         <span class="current-page">{{ num }}</span>
       {% else %}
-        <a href="?page={{ num }}">{{ num }}</a>
+        <a href="?page={{ num }}&search={{ search }}">{{ num }}</a>
       {% endif %}
     {% endfor %}
-
-    {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-    {% endif %}
+    
+    <a href="?page={{ page_obj.paginator.num_pages }}&search={{ search }}">last &raquo;</a>
   </span>
 </div>
 {% endblock %}
