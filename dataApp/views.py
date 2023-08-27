@@ -35,7 +35,7 @@ def databag_view(request):
     #retrieve
     ############################
     subfolders_list = Subfolder.objects.filter(user=request.user).order_by('name')  # Order the subfolders by name
-    paginator = Paginator(subfolders_list, 10)  # Display 10 subfolders per page
+    paginator = Paginator(subfolders_list, 5)  # Display 10 subfolders per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
