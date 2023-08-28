@@ -1,38 +1,43 @@
-<!-- Display the file creation form -->
+{% extends 'dataApp/index.html' %}
+
+{% block content %}
+<!-- Display the file creation form
 <form method="post" action="{% url 'subfolder' subfolder.id %}">
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Create File</button>
-</form>
+</form> -->
+
+<div class="subfolder-list">
+
+  <div class="form-container">
+    <div class="left">
+    <form class="new" method="get" action="{% url 'subfolder' subfolder.id %}">
+      <div class="form-row">
+      <input type="search" name="search" placeholder="Search File">
+    </div>
+      <button type="submit">Search</i></button>
+    </form>
+  </div>
+  <div class="right">
+    <form class="new" method='post' action="{% url 'redirect_to_file' subfolder.id %}">
+      {% csrf_token %}
+        <!-- Add more input fields here -->
+        <button type="submit">Add File</button>
+    </form>
+  </div>
+</div>
 
 <!-- Display existing files -->
 {% for file in page_obj %}
-  <div>
-    <a href="{% url 'file' file.id %}">{{ file.name }}</a>
+  <div class="flex">
+    <a href="{% url 'file' file.id %}"><i class="fa fa-file-o" aria-hidden="true"></i>  {{ file.name }}</a>
     <form method="post" action="{% url 'delete_file' file.id %}">
       {% csrf_token %}
-      <button type="submit" onclick="return confirm('Are you sure you want to delete this file?')">Delete File</button>
+      <button type="submit" onclick="return confirm('Are you sure you want to delete this subfolder and its files?')"><i class="fa fa-trash-o" style="font-size:24px;color:#D22B2B"></i></button>
     </form>
   </div>
 {% endfor %}
-
-<!-- Pagination links -->
-<div class="pagination">
-  <span class="step-links">
-    {% if page_obj.has_previous %}
-      <a href="?page=1">&laquo; first</a>
-    {% endif %}
-
-    {% for num in page_obj.paginator.page_range %}
-      {% if num == page_obj.number %}
-        <span class="current-page">{{ num }}</span>
-      {% else %}
-        <a href="?page={{ num }}">{{ num }}</a>
-      {% endif %}
-    {% endfor %}
-
-    {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-    {% endif %}
-  </span>
 </div>
+
+{% endblock %}

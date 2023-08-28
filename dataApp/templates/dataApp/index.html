@@ -1,3 +1,4 @@
+{% load json_filter %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -9,15 +10,14 @@
     <link rel="stylesheet" href="{% static 'dataApp/css/index.css' %}">
     <link rel="stylesheet" href="{% static 'dataApp/css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css"> -->
-    <!-- Unicons CSS -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
-   <!-- <script src="script.js" defer></script> -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
   </head>
   <body>
     <nav class="nav">
       <i class="uil uil-bars navOpenBtn"></i>
-      <a href="/" class="logo">DataLockr</a>
+
+      <a href="/" class="logo"><i class='bx bx-lock bx-burst' ></i> DataLockr</a>
       
       <!-- <i class="uil uil-search search-icon" id="searchIcon"></i>
       <div class="search-box">
@@ -34,6 +34,24 @@
   </nav>
     <div class="content">
       {% block content %}{% endblock %}
+      <!-- Pagination links -->
+      {% if show_div %}
+      <div class="pagination">
+        <span class="step-links">
+          <a href="?page=1&search={{ search }}">&laquo; first</a>
+          
+          {% for num in page_obj.paginator.page_range %}
+            {% if num == page_obj.number %}
+              <span class="current-page">{{ num }}</span>
+            {% else %}
+              <a href="?page={{ num }}&search={{ search }}">{{ num }}</a>
+            {% endif %}
+          {% endfor %}
+          
+          <a href="?page={{ page_obj.paginator.num_pages }}&search={{ search }}">last &raquo;</a>
+        </span>
+      </div>
+      {% endif %}
   </div>
     <script src="{% static 'dataApp/js/main.js' %}"></script>
   </body>

@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     #retrieve subfolders
     path('', views.databag_view, name='databag'),
+    path('create/<int:subfolder_id>/', views.redirect_to_file, name='redirect_to_file'),
     #retrieve files in subfolder
     path('subfolder/<int:subfolder_id>/', views.subfolder_view, name='subfolder'),
     #retrieve files content

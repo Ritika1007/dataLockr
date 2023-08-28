@@ -1,0 +1,11 @@
+{% extends 'dataApp/index.html' %}
+
+{% block content %}
+<!-- Display the file creation form -->
+<form method="post" action="{% url 'subfolder' subfolder_id %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Create File</button>
+</form>
+
+{% endblock %}

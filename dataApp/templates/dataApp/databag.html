@@ -3,13 +3,6 @@
 {% block content %}
 
 <div class="subfolder-list">
-
-  <!-- <div class="search-bar">
-    <form class="search" method="get">
-      <input type="text" name="query" placeholder="Search Folders">
-      <button type="submit"><i class="fa fa-search"></i></button>
-    </form>
-  </div> -->
   
   <div class="form-container">
     <div class="left">
@@ -47,20 +40,4 @@
   {% endfor %}
 </div>
   
-<!-- Pagination links -->
-<div class="pagination">
-  <span class="step-links">
-    <a href="?page=1&search={{ search }}">&laquo; first</a>
-    
-    {% for num in page_obj.paginator.page_range %}
-      {% if num == page_obj.number %}
-        <span class="current-page">{{ num }}</span>
-      {% else %}
-        <a href="?page={{ num }}&search={{ search }}">{{ num }}</a>
-      {% endif %}
-    {% endfor %}
-    
-    <a href="?page={{ page_obj.paginator.num_pages }}&search={{ search }}">last &raquo;</a>
-  </span>
-</div>
 {% endblock %}

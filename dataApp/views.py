@@ -19,8 +19,6 @@ def databag_view(request):
     ############################
     #Create
     ############################
-    # username = request.user.username  
-    # user = User.objects.get(username=username)
     
     if request.method == 'POST':
         form = SubfolderForm(request.POST)
@@ -35,28 +33,20 @@ def databag_view(request):
     ############################
     #retrieve
     ############################
-    # subfolders_list = Subfolder.objects.filter(user=request.user).order_by('name')  # Order the subfolders by name
-    # paginator = Paginator(subfolders_list, 5)  # Display 10 subfolders per page
-    # page_number = request.GET.get('page')
-    # page_obj = paginator.get_page(page_number)
-
-    # context = {'form': form, 'page_obj': page_obj}
-    # return render(request, 'dataApp/databag.html', context)
-    
+    show_div = True
     query = request.GET.get('search', '')
     subfolders_list = Subfolder.objects.filter(Q(user=request.user) & Q(name__icontains=query)).order_by('name')
     paginator = Paginator(subfolders_list, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    context = {'form': form, 'page_obj': page_obj, 'search': query}
+    context = {'form': form, 'page_obj': page_obj, 'search': query, 'show_div': show_div}
     return render(request, 'dataApp/databag.html', context)
 
 @login_required(login_url='/login')
 def subfolder_view(request, subfolder_id):
 
     subfolder = get_object_or_404(Subfolder, pk=subfolder_id)
-    files_list = subfolder.jsonfile_set.order_by('name')  # Order the files by name
 
     ############################
     #Create
@@ -74,12 +64,23 @@ def subfolder_view(request, subfolder_id):
     ############################
     #retrieve
     ############################
-    paginator = Paginator(files_list, 10)  # Display 10 files per page
+    show_div = True
+    query = request.GET.get('search', '')
+    files_list = subfolder.jsonfile_set.filter(Q(name__icontains=query)).order_by('name')  # Order the files by name
+    
+    paginator = Paginator(files_list, 5)  # Display 5 files per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    context = {'subfolder': subfolder, 'form': form, 'page_obj': page_obj}
+    
+    context = {'subfolder': subfolder, 'form': form, 'page_obj': page_obj, 'search': query, 'show_div': show_div}
     return render(request, 'dataApp/subfolder.html', context)
+
+@login_required(login_url='/login')
+def redirect_to_file(request, subfolder_id):
+    form = JSONFileForm()
+    return render(request, 'dataApp/create_file_form.html', {'subfolder_id' : subfolder_id, 'form': form})
+
 
 @login_required(login_url='/login')
 def file_view(request, file_id):
@@ -134,3 +135,4 @@ def edit_file(request, file_id):
         content = file.content
 
     return render(request, 'dataApp/file.html', {'file': file, 'content': content})
+
