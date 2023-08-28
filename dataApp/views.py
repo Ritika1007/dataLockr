@@ -58,6 +58,7 @@ def subfolder_view(request, subfolder_id):
             file_obj = form.save(commit=False)
             file_obj.subfolder = subfolder
             file_obj.save()
+            sweetify.info(request, 'File Created!')
         else:
              sweetify.error(request, 'Invalid JSON format')
         
@@ -132,10 +133,12 @@ def edit_file(request, file_id):
         try:
             json.loads(content)
             JSONFile.objects.filter(id=file_id).update(content=content)
+            sweetify.info(request, 'File Updated!')
             return redirect('subfolder', subfolder_id=file.subfolder.id)
         except json.JSONDecodeError:
-            error_message = "Invalid JSON format"
-            return render(request, 'dataApp/file.html', {'file': file, 'error_message': error_message})
+            # error_message = "Invalid JSON format"
+            sweetify.error(request, 'Invalid JSON format')
+            return render(request, 'dataApp/file.html', {'file': file})
     else:
         content = file.content
 
