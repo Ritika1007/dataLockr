@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 import json
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+import sweetify
 # from django.contrib.auth.models import User
 
 
@@ -57,7 +58,11 @@ def subfolder_view(request, subfolder_id):
             file_obj = form.save(commit=False)
             file_obj.subfolder = subfolder
             file_obj.save()
-            return redirect('subfolder', subfolder_id=subfolder_id)
+        else:
+             sweetify.error(request, 'Invalid JSON format')
+        
+        return redirect('subfolder', subfolder_id=subfolder_id)
+        
     else:
         form = JSONFileForm()
 

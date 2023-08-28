@@ -1,10 +1,16 @@
 {% extends 'dataApp/index.html' %}
 
 {% block content %}
+
 <!-- Display the file creation form -->
-<form method="post" action="{% url 'subfolder' subfolder_id %}">
+<form class="create-file" method="post" action="{% url 'subfolder' subfolder_id %}">
   {% csrf_token %}
-  {{ form.as_p }}
+  {% for field in form %}
+    <div class="file-row">
+        <!-- {{ field.label_tag }} -->
+        {{ field }}
+    </div>
+{% endfor %}
   <button type="submit">Create File</button>
 </form>
 

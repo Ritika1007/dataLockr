@@ -10,6 +10,20 @@ class JSONFileForm(forms.ModelForm):
     class Meta:
         model = JSONFile
         fields = ['name', 'content']
+        
+    widgets = {
+        'content': forms.Textarea(attrs={'placeholder': 'content'}),
+    }
+    
+    placeholders = {
+        'name': 'Json File name',
+        'content': 'JSON data',
+    }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, placeholder in self.placeholders.items():
+            self.fields[field_name].widget.attrs['placeholder'] = placeholder
     
     #json validation of input file data
     def clean_content(self):

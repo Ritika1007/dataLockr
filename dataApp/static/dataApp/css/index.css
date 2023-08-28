@@ -26,11 +26,11 @@ body {
 }
 .nav,
 .nav .nav-links {
-  display: flex;
+  /* display: flex; */
   align-items: center;
 }
 .nav {
-  /* display: flex; */
+  display: flex;
   justify-content: space-between; /* To align items to the right */
 }
 a {

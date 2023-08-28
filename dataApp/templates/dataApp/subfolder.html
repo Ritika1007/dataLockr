@@ -14,7 +14,7 @@
     <div class="left">
     <form class="new" method="get" action="{% url 'subfolder' subfolder.id %}">
       <div class="form-row">
-      <input type="search" name="search" placeholder="Search File">
+      <input type="search" name="search" placeholder="Search File in {{ subfolder.name }}">
     </div>
       <button type="submit">Search</i></button>
     </form>
@@ -28,6 +28,7 @@
   </div>
 </div>
 
+<!-- <h3>Folder: {{ subfolder.name }}</h3> -->
 <!-- Display existing files -->
 {% for file in page_obj %}
   <div class="flex">
