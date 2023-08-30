@@ -1,7 +1,7 @@
 <div align="center">
 <img src="https://github.com/Ritika1007/dataLockr/assets/72782573/7483bceb-635c-47fd-92b7-18e7766c2132" alt="Security Icon">
 
-
+![Python](https://img.shields.io/badge/python-3670A0?style=flat&logo=python&logoColor=ffdd54)
 [![Django](https://img.shields.io/badge/-Django-092E20?style=flat&logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![Django Rest Framework](https://img.shields.io/badge/-Django%20Rest%20Framework-092E20?style=flat&logo=django&logoColor=white)](https://www.django-rest-framework.org/)
 [![JWT Tokens](https://img.shields.io/badge/-JWT%20Tokens-000000?style=flat&logo=json-web-tokens)](https://jwt.io/)
