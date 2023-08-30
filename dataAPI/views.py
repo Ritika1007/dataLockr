@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from dataApp.models import Subfolder,JSONFile
@@ -6,9 +7,11 @@ from .serializers import SubfolderSerializer,JSONFileSerializer
 import json
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from drf_yasg.utils import swagger_auto_schema
 
 
-class SubfolderAPIView(APIView):
+
+class SubfolderAPIView(GenericAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -17,7 +20,7 @@ class SubfolderAPIView(APIView):
         queryset =  Subfolder.objects.filter(user=request.user).order_by('name')
         serializer = SubfolderSerializer(queryset, many=True)
         return Response(serializer.data)
-
+    @swagger_auto_schema(request_body=SubfolderSerializer)
     def post(self, request, format=None):
         serializer = SubfolderSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -77,7 +80,8 @@ class JSONFileAPIView(APIView):
                 serializer = JSONFileSerializer(files, many=True)
                 return Response(serializer.data)
             return Response({"error": "Subfolder not found."}, status=status.HTTP_404_NOT_FOUND)
-        
+    
+    @swagger_auto_schema(request_body=JSONFileSerializer)
     def post(self, request, subfolder_id, format=None):
         subfolder = self.get_subfolder(subfolder_id)
         if subfolder.user != request.user:
@@ -92,6 +96,7 @@ class JSONFileAPIView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({"error": "Subfolder not found."}, status=status.HTTP_404_NOT_FOUND)
     
+    @swagger_auto_schema(request_body=JSONFileSerializer)
     def put(self, request, subfolder_id, file_id, format=None):
         file_obj = self.get_file(subfolder_id, file_id)
         

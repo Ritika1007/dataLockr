@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import *
 
+
 urlpatterns = [
     path('subfolders/', SubfolderAPIView.as_view(), name='subfolder-list-create'),
     path('subfolders/<int:pk>', SubfolderAPIView.as_view(), name='subfolder-delete'),
