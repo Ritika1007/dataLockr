@@ -4,6 +4,7 @@
 ![Python](https://img.shields.io/badge/python-3670A0?style=flat&logo=python&logoColor=ffdd54)
 [![Django](https://img.shields.io/badge/-Django-092E20?style=flat&logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![Django Rest Framework](https://img.shields.io/badge/-Django%20Rest%20Framework-092E20?style=flat&logo=django&logoColor=white)](https://www.django-rest-framework.org/)
+![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=flat&logo=django&logoColor=white&color=ff1709&labelColor=gray)
 [![JWT Tokens](https://img.shields.io/badge/-JWT%20Tokens-000000?style=flat&logo=json-web-tokens)](https://jwt.io/)
 [![HTML](https://img.shields.io/badge/-HTML-E34F26?style=flat&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS](https://img.shields.io/badge/-CSS-1572B6?style=flat&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
