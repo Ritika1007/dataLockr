@@ -38,7 +38,19 @@ def get_folders_list(token):
     )
     cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
 
-
+def create_folder(token,payload):
+    """create folder"""
+    end_point = '/v1/api/subfolders/'
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json'
+    }
+    result = requests.post(
+        f'{BASE_URL}{end_point}', headers=headers, data=payload
+    )
+    cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
+    
+    
 def get_files_in_folders(token,folder_id):
     """get lits of files in a folder created by user"""
     end_point = f'/v1/api/subfolders/{folder_id}/files'
@@ -60,7 +72,15 @@ user_details = {
     'password': password
 }
 access_token = get_token(user_details)
-get_folders_list(access_token)
+# get_folders_list(access_token)
 
-folder = input('Enter Subfolder ID: ')
-get_files_in_folders(access_token,folder)
+
+# folder = input('Enter Subfolder ID: ')
+# get_files_in_folders(access_token,folder)
+
+
+payload = json.dumps({
+  "name": "requestsTest"
+})
+
+create_folder(access_token,payload)
