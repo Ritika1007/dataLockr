@@ -39,6 +39,18 @@ def get_folders_list(token):
     cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
 
 
+def get_files_in_folders(token,folder_id):
+    """get lits of files in a folder created by user"""
+    end_point = f'/v1/api/subfolders/{folder_id}/files'
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json'
+    }
+    result = requests.get(
+        f'{BASE_URL}{end_point}', headers=headers
+    )
+    cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
+
 # Get User Creds
 username = input('Enter Username: ')
 password = getpass.getpass(prompt='Enter Passowrd: ')
@@ -49,3 +61,6 @@ user_details = {
 }
 access_token = get_token(user_details)
 get_folders_list(access_token)
+
+folder = input('Enter Subfolder ID: ')
+get_files_in_folders(access_token,folder)
