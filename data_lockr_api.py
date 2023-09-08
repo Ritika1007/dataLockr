@@ -50,6 +50,18 @@ def create_folder(token,payload):
     )
     cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
     
+def delete_folder(token,id):
+    """function to delete folder"""
+    end_point = f'/v1/api/subfolders/{id}'
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json'
+    }
+    
+    result = requests.delete(
+        f'{BASE_URL}{end_point}', headers=headers
+    )
+    cprint(result, 'green')
     
 def get_files_in_folders(token,folder_id):
     """get lits of files in a folder created by user"""
@@ -72,7 +84,7 @@ user_details = {
     'password': password
 }
 access_token = get_token(user_details)
-# get_folders_list(access_token)
+get_folders_list(access_token)
 
 
 # folder = input('Enter Subfolder ID: ')
@@ -83,4 +95,7 @@ payload = json.dumps({
   "name": "requestsTest"
 })
 
-create_folder(access_token,payload)
+# create_folder(access_token,payload)
+cprint("Note: all files under this will be deleted.", 'red')
+folder_to_delete = input('Enter Subfolder ID: ')
+delete_folder(access_token, folder_to_delete)
