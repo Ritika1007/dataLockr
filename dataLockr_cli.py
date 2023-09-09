@@ -1,7 +1,7 @@
 """
 API Version: v1
 Author: Ritika Arora
-script to test dataLockr APIs using Python3 requests.
+CLI for handling CRUD via dataLockr APIs using Python3 requests.
 """
 
 import json
