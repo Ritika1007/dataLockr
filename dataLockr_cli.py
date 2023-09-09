@@ -6,7 +6,7 @@ CLI for handling CRUD via dataLockr APIs using Python3 requests.
 
 import json
 import getpass
-from termcolor import cprint
+from termcolor import cprint,colored
 import requests
 
 
@@ -25,7 +25,9 @@ def get_header(token):
 
 
 def get_token(params):
-    """function to get user jwt token"""
+    """
+    function to get user jwt token
+    """
     end_point = '/api/token/'
     get_jwt_token = requests.post(
         f'{BASE_URL}{end_point}',  params)
@@ -35,17 +37,27 @@ def get_token(params):
         return result['access']
     except KeyError:
         cprint('\nInvaid User!', 'red')
-
+        
+####################
 #folder operations
+####################
+
 def get_folders_list(token):
-    """get lits of folders created by user"""
+    """
+    get lits of folders created by user
+    """
     end_point = '/v1/api/subfolders/'
 
     result = requests.get(
         f'{BASE_URL}{end_point}', headers=get_header(token)
     )
-    cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
+    # cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
+    list_folders = json.loads(result.text)
+    cprint("\nID    Folder\n",'green')
+    for data in list_folders:
+        cprint(str(data['id'])+'    '+data['name'],'green')
 
+#############################
 def create_folder(token,payload):
     """create folder"""
     end_point = '/v1/api/subfolders/'
@@ -54,8 +66,8 @@ def create_folder(token,payload):
         f'{BASE_URL}{end_point}', headers=get_header(token), data=payload
     )
     cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
-    
-    
+    # return(json.dumps(json.loads(result.text), indent=4, sort_keys=True))
+
 def delete_folder(token,id):
     """function to delete folder"""
     end_point = f'/v1/api/subfolders/{id}'
@@ -73,29 +85,96 @@ def get_files_in_folders(token,folder_id):
     result = requests.get(
         f'{BASE_URL}{end_point}', headers=get_header(token)
     )
-    cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
-
-# Get User Creds
-username = input('Enter Username: ')
-password = getpass.getpass(prompt='Enter Passowrd: ')
-
-user_details = {
-    'username': username,
-    'password': password
-}
-access_token = get_token(user_details)
-get_folders_list(access_token)
+    return(json.dumps(json.loads(result.text), indent=4, sort_keys=True))
 
 
-# folder = input('Enter Subfolder ID: ')
-# get_files_in_folders(access_token,folder)
 
 
-payload = json.dumps({
-  "name": "requestsTest"
-})
+def user_prompt():
+    """
+    print user prompts with green color
+    """
+    return (colored('Enter Your Choice\n\t', 'light_green'))
 
-# create_folder(access_token,payload)
-cprint("Note: all files under this will be deleted.", 'red')
-folder_to_delete = input('Enter Subfolder ID: ')
-delete_folder(access_token, folder_to_delete)
+def get_usercreds():
+    """
+    Get User Creds for token
+    """
+    username = input('Enter Username: ')
+    password = getpass.getpass(prompt='Enter Passowrd: ')
+
+    user_details = {
+        'username': username,
+        'password': password
+    }
+    
+    return user_details
+    
+print()
+cprint("#################\n DataLockr CLI\n#################\n","blue")
+cprint("What would you like to do?\n","yellow")
+cprint("Options\n\t1. CRUD on folders \n\t2. CRUD on files\n","magenta")
+
+choice_param = input(user_prompt()+('(1/2/exit): '))
+print()
+
+
+if choice_param == '1':
+    #CRUD on folder
+    cprint("-----------------\n CRUD on folders\n-----------------\n","cyan")
+    cprint("Options\n\t1. Retrieve list of folders.\n\t2. Create Folder.\n\t3. Delete Folder\n","magenta")
+    choice_param = input(user_prompt()+('(1/2/3/exit): '))
+    
+    if choice_param != "exit":
+        user = get_usercreds()
+        access_token = get_token(user)
+    
+        if choice_param == '1': 
+            get_folders_list(access_token)
+            
+        elif choice_param == '2':
+            folder_name = input(colored("Enter folder name you want to create: ", 'light_green'))
+            payload = json.dumps({
+                "name": folder_name
+                })
+            create_folder(access_token,payload)
+
+        elif choice_param == '3':
+            get_folders_list(access_token)
+            print()
+            folder_id = int(input(colored("Enter folder Id you want to delete: ", 'red')))
+            delete_folder(access_token, folder_id)
+            
+            
+
+            
+    else:
+        exit(101)
+        
+    
+    
+    
+
+
+# # Get User Creds
+# username = input('Enter Username: ')
+# password = getpass.getpass(prompt='Enter Passowrd: ')
+
+# user_details = {
+#     'username': username,
+#     'password': password
+# }
+# access_token = get_token(user_details)
+# get_folders_list(access_token)
+
+
+# # folder = input('Enter Subfolder ID: ')
+# # get_files_in_folders(access_token,folder)
+
+
+
+
+# # create_folder(access_token,payload)
+# cprint("Note: all files under this will be deleted.", 'red')
+# folder_to_delete = input('Enter Subfolder ID: ')
+# delete_folder(access_token, folder_to_delete)
