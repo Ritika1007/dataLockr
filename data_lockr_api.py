@@ -12,6 +12,17 @@ import requests
 
 BASE_URL = "http://127.0.0.1:8000"
 
+def get_header(token):
+    """"
+    function to return header as dict for python requests 
+    """
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json'
+    }
+    
+    return headers
+
 
 def get_token(params):
     """function to get user jwt token"""
@@ -25,53 +36,42 @@ def get_token(params):
     except KeyError:
         cprint('\nInvaid User!', 'red')
 
-
+#folder operations
 def get_folders_list(token):
     """get lits of folders created by user"""
     end_point = '/v1/api/subfolders/'
-    headers = {
-        'Authorization': f'Bearer {token}',
-        'Content-Type': 'application/json'
-    }
+
     result = requests.get(
-        f'{BASE_URL}{end_point}', headers=headers
+        f'{BASE_URL}{end_point}', headers=get_header(token)
     )
     cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
 
 def create_folder(token,payload):
     """create folder"""
     end_point = '/v1/api/subfolders/'
-    headers = {
-        'Authorization': f'Bearer {token}',
-        'Content-Type': 'application/json'
-    }
+
     result = requests.post(
-        f'{BASE_URL}{end_point}', headers=headers, data=payload
+        f'{BASE_URL}{end_point}', headers=get_header(token), data=payload
     )
     cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
+    
     
 def delete_folder(token,id):
     """function to delete folder"""
     end_point = f'/v1/api/subfolders/{id}'
-    headers = {
-        'Authorization': f'Bearer {token}',
-        'Content-Type': 'application/json'
-    }
-    
+
     result = requests.delete(
-        f'{BASE_URL}{end_point}', headers=headers
+        f'{BASE_URL}{end_point}', headers=get_header(token)
     )
     cprint(result, 'green')
     
+#file operations    
 def get_files_in_folders(token,folder_id):
     """get lits of files in a folder created by user"""
     end_point = f'/v1/api/subfolders/{folder_id}/files'
-    headers = {
-        'Authorization': f'Bearer {token}',
-        'Content-Type': 'application/json'
-    }
+
     result = requests.get(
-        f'{BASE_URL}{end_point}', headers=headers
+        f'{BASE_URL}{end_point}', headers=get_header(token)
     )
     cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
 
