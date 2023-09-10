@@ -85,7 +85,11 @@ def get_files_in_folders(token,folder_id):
     result = requests.get(
         f'{BASE_URL}{end_point}', headers=get_header(token)
     )
-    return(json.dumps(json.loads(result.text), indent=4, sort_keys=True))
+    # return(json.dumps(json.loads(result.text), indent=4, sort_keys=True))
+    list_files = json.loads(result.text)
+    cprint("\nID    Folder    Content\n",'green')
+    for data in list_files:
+        cprint(str(data['id'])+'    '+data['name']+'    '+data['content'],'green')
 
 
 
@@ -150,6 +154,27 @@ if choice_param == '1':
             
     else:
         exit(101)
+        
+elif choice_param == '2':
+    #CRUD on folder
+    cprint("-----------------\n CRUD on Files\n-----------------\n","cyan")
+    cprint("Options\n\t1. Retrieve list of files.\n\t2. Create file.\n\t3. Delete file.\n\t4. Update a file.\n","magenta")
+    choice_param = input(user_prompt()+('(1/2/3/4/exit): '))
+    
+    if choice_param != "exit":
+        user = get_usercreds()
+        access_token = get_token(user)
+        
+        if choice_param == '1': 
+            get_folders_list(access_token)
+            folder_id = int(input(colored("\nEnter folder Id : ", 'light_blue')))
+            get_files_in_folders(access_token,folder_id)
+            
+        
+    else:
+        exit(101)
+else:
+    exit(101)
         
     
     
