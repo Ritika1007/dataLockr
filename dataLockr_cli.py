@@ -91,6 +91,15 @@ def get_files_in_folders(token,folder_id):
     for data in list_files:
         cprint(str(data['id'])+'    '+data['name']+'    '+data['content'],'green')
 
+def create_file_in_folder(token,folder_id,payload):
+    """create file"""
+    end_point = f'/v1/api/subfolders/{folder_id}/files'
+
+    result = requests.post(
+        f'{BASE_URL}{end_point}', headers=get_header(token), data=payload
+    )
+    cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
+
 
 
 
@@ -169,6 +178,19 @@ elif choice_param == '2':
             get_folders_list(access_token)
             folder_id = int(input(colored("\nEnter folder Id : ", 'light_blue')))
             get_files_in_folders(access_token,folder_id)
+
+        elif choice_param == '2':
+            get_folders_list(access_token)
+            folder_id = int(input(colored("\nEnter folder Id : ", 'light_blue')))
+            print()
+            file_name = input(colored("Enter file name you want to create: ", 'light_green'))
+            file_content = input(colored("Enter file contents: ", 'light_green'))
+
+            payload = json.dumps({
+                "name": file_name,
+                "content": file_content
+                })
+            create_file_in_folder(access_token,folder_id,payload)
             
         
     else:
