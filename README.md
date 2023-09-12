@@ -54,20 +54,20 @@ Experience the power of DataLockr with a simple installation process.
 
    ```bash
    cd dataLockr
-   python -m venv venv
+   python3 -m venv venv
    source venv/bin/activate   # macOS and Linux
    venv\Scripts\activate      # Windows
    
 3. **Install Dependencies, run migrations and create superuser**.
 
     ```bash
-   pip install -r requirements.txt
-   python manage.py migrate
-   python manage.py createsuperuser
+   pip3 install -r requirements.txt
+   python3 manage.py migrate
+   python3 manage.py createsuperuser
 
 4. **Start the Server**: Launch the development server.
    ```bash
-   python manage.py runserver
+   python3 manage.py runserver
 
 ## Usage
 
