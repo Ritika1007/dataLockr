@@ -173,7 +173,7 @@ if choice_param == '1':
         exit(101)
         
 elif choice_param == '2':
-    #CRUD on folder
+    #CRUD on files
     cprint("-----------------\n CRUD on Files\n-----------------\n","cyan")
     cprint("Options\n\t1. Retrieve list of files.\n\t2. Create file.\n\t3. Delete file.\n\t4. Update a file.\n","magenta")
     choice_param = input(user_prompt()+('(1/2/3/4/exit): '))
@@ -200,6 +200,16 @@ elif choice_param == '2':
                 })
             create_file_in_folder(access_token,folder_id,payload)
             
+        elif choice_param == '3':
+            get_folders_list(access_token)
+            print()
+            folder_id = int(input(colored("Enter folder Id from which you want to delete file: ", 'red')))
+            print()
+            get_files_in_folders(access_token,folder_id)
+            print()
+            file_id = int(input(colored("Enter file Id which you want to delete: ", 'red')))
+            delete_file(access_token,folder_id,file_id)
+             
         
     else:
         exit(101)
