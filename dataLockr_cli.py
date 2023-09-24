@@ -100,7 +100,15 @@ def create_file_in_folder(token,folder_id,payload):
     )
     cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
 
+def delete_file(token,folder_id,file_id):
+    """function to delete file"""
+    end_point = f'/v1/api/subfolders/{folder_id}/file/{file_id}'
 
+    result = requests.delete(
+        f'{BASE_URL}{end_point}', headers=get_header(token)
+    )
+    cprint(result, 'green')
+    
 
 
 def user_prompt():
