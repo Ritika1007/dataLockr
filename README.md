@@ -43,6 +43,10 @@ Our integrated alert system, powered by Sweetify, provides intuitive and visuall
 
 Easily search for folders or files by typing the name in the search bar. The results will dynamically update to match your query.
 
+### ⚙️ CLI (python script) for CRUD Operations
+
+   Manage your DataLockr data with ease using our Python CLI. Perform Create, Read, Update, and Delete operations from the command line.
+   In your project directory just run " python dataLockr_cli.py "
 
 ## Installation
 
@@ -184,6 +188,10 @@ Unleash the potential of Swagger UI and master your API interactions with ease! 
 >Swagger UI View
 
 ![image](https://github.com/Ritika1007/dataLockr/assets/72782573/8d7366e8-e0c0-42eb-bfd5-1062608eeb9b)
+
+>CLI
+![image](https://github.com/Ritika1007/dataLockr/assets/72782573/26b4f55b-4e8b-4391-a249-ba03a63e1ae9)
+
 
 
 
