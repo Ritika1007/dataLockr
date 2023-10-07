@@ -110,6 +110,19 @@ def delete_file(token,folder_id,file_id):
     cprint(result, 'green')
     
 
+def update_file_in_folder(token,folder_id,file_id,payload):
+    """update file"""
+    end_point = f'/v1/api/subfolders/{folder_id}/file/{file_id}'
+    
+    #print(end_point)
+
+    result = requests.put(
+        f'{BASE_URL}{end_point}', headers=get_header(token), data=payload
+    )
+    print(result)
+    # cprint(json.dumps(json.loads(result.text), indent=4, sort_keys=True), 'green')
+    
+
 
 def user_prompt():
     """
@@ -209,7 +222,22 @@ elif choice_param == '2':
             print()
             file_id = int(input(colored("Enter file Id which you want to delete: ", 'red')))
             delete_file(access_token,folder_id,file_id)
-             
+            
+        elif choice_param == '4':
+            get_folders_list(access_token)
+            folder_id = int(input(colored("\nEnter folder Id : ", 'light_blue')))
+            print()
+            get_files_in_folders(access_token,folder_id)
+            file_id = int(input(colored("Enter file id you want to update: ", 'light_green')))
+            print()
+            file_content = input(colored("Enter updated contents of file: ", 'light_green'))
+
+            payload = json.dumps({
+                "content": file_content
+                })
+            print()
+            update_file_in_folder(access_token,folder_id,file_id,payload)
+
         
     else:
         exit(101)
