@@ -162,7 +162,7 @@ button:hover {
   z-index: 5;
   background: #f6f6f6;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-  color: #fff;
+  /* color: #fff; */
   /* opacity: 1; */
 }
 
