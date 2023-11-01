@@ -31,7 +31,7 @@ body {
 }
 .nav {
   display: flex;
-  justify-content: space-between; /* To align items to the right */
+  justify-content: space-between;  /* To align items to the right */
 }
 a {
   color: #fff;
