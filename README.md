@@ -69,6 +69,8 @@ Experience the power of DataLockr with a simple installation process.
    python3 manage.py migrate
    python3 manage.py createsuperuser
 
+Note: Please make .env file in dataLockr/dataLockr directory before migrating.
+
 4. **Start the Server**: Launch the development server.
    ```bash
    python3 manage.py runserver
