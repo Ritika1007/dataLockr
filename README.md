@@ -21,8 +21,15 @@
 
 
 
-https://github.com/Ritika1007/dataLockr/assets/72782573/119c49a5-fe68-45b3-9f98-a665195ecfa9
+https://github.com/Ritika1007/dataLockr/assets/72782573/85c1e239-e856-4459-afbc-a91905f9b6c1
 
+
+
+
+
+
+
+https://github.com/Ritika1007/dataLockr/assets/72782573/27e61282-ee2a-4395-b7a6-fb3f8ac2c901
 
 
 
