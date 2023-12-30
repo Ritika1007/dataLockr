@@ -37,6 +37,7 @@ def get_token(params):
         return result['access']
     except KeyError:
         cprint('\nInvaid User!', 'red')
+        exit(101)
         
 ####################
 #folder operations
@@ -146,103 +147,105 @@ def get_usercreds():
     
 print()
 cprint("#################\n DataLockr CLI\n#################\n","blue")
-cprint("What would you like to do?\n","yellow")
-cprint("Options\n\t1. CRUD on folders \n\t2. CRUD on files\n","magenta")
 
-choice_param = input(user_prompt()+('(1/2/exit): '))
-print()
+user = get_usercreds()
+access_token = get_token(user)
 
 
-if choice_param == '1':
-    #CRUD on folder
-    cprint("-----------------\n CRUD on folders\n-----------------\n","cyan")
-    cprint("Options\n\t1. Retrieve list of folders.\n\t2. Create Folder.\n\t3. Delete Folder\n","magenta")
-    choice_param = input(user_prompt()+('(1/2/3/exit): '))
-    
-    if choice_param != "exit":
-        user = get_usercreds()
-        access_token = get_token(user)
-    
-        if choice_param == '1': 
-            get_folders_list(access_token)
+choice = ''
+
+while choice != 'exit':
+
+    cprint("What would you like to do?\n","yellow")
+    cprint("Options\n\t1. CRUD on folders \n\t2. CRUD on files\n","magenta")
+
+    choice = input(user_prompt()+('(1/2/exit): '))
+    print()
+
+
+    if choice == '1':
+        #CRUD on folder
+        choice_param = ''
+        while (choice_param != 'exit'):
+            cprint("\n-----------------\n CRUD on folders\n-----------------\n","cyan")
+            cprint("Options\n\t1. Retrieve list of folders.\n\t2. Create Folder.\n\t3. Delete Folder\n","magenta")
+            choice_param = input(user_prompt()+('(1/2/3/exit): '))
             
-        elif choice_param == '2':
-            folder_name = input(colored("Enter folder name you want to create: ", 'light_green'))
-            payload = json.dumps({
-                "name": folder_name
-                })
-            create_folder(access_token,payload)
-
-        elif choice_param == '3':
-            get_folders_list(access_token)
-            print()
-            folder_id = int(input(colored("Enter folder Id you want to delete: ", 'red')))
-            delete_folder(access_token, folder_id)
+            if choice_param != "exit":
+                # user = get_usercreds()
+                # access_token = get_token(user)
             
+                if choice_param == '1': 
+                    get_folders_list(access_token)
+                    
+                elif choice_param == '2':
+                    folder_name = input(colored("Enter folder name you want to create: ", 'light_green'))
+                    payload = json.dumps({
+                        "name": folder_name
+                        })
+                    create_folder(access_token,payload)
+
+                elif choice_param == '3':
+                    get_folders_list(access_token)
+                    print()
+                    folder_id = int(input(colored("Enter folder Id you want to delete: ", 'red')))
+                    delete_folder(access_token, folder_id)
+                    
             
-
+    elif choice == '2':
+        choice_param = ''
+        #CRUD on files
+        while choice_param!='exit':
+            cprint("\n-----------------\n CRUD on Files\n-----------------\n","cyan")
+            cprint("Options\n\t1. Retrieve list of files.\n\t2. Create file.\n\t3. Delete file.\n\t4. Update a file.\n","magenta")
+            choice_param = input(user_prompt()+('(1/2/3/4/exit): '))
             
-    else:
-        exit(101)
-        
-elif choice_param == '2':
-    #CRUD on files
-    cprint("-----------------\n CRUD on Files\n-----------------\n","cyan")
-    cprint("Options\n\t1. Retrieve list of files.\n\t2. Create file.\n\t3. Delete file.\n\t4. Update a file.\n","magenta")
-    choice_param = input(user_prompt()+('(1/2/3/4/exit): '))
-    
-    if choice_param != "exit":
-        user = get_usercreds()
-        access_token = get_token(user)
-        
-        if choice_param == '1': 
-            get_folders_list(access_token)
-            folder_id = int(input(colored("\nEnter folder Id : ", 'light_blue')))
-            get_files_in_folders(access_token,folder_id)
+            if choice_param != "exit":
+                # user = get_usercreds()
+                # access_token = get_token(user)
+                
+                if choice_param == '1': 
+                    get_folders_list(access_token)
+                    folder_id = int(input(colored("\nEnter folder Id : ", 'light_blue')))
+                    get_files_in_folders(access_token,folder_id)
 
-        elif choice_param == '2':
-            get_folders_list(access_token)
-            folder_id = int(input(colored("\nEnter folder Id : ", 'light_blue')))
-            print()
-            file_name = input(colored("Enter file name you want to create: ", 'light_green'))
-            file_content = input(colored("Enter file contents: ", 'light_green'))
+                elif choice_param == '2':
+                    get_folders_list(access_token)
+                    folder_id = int(input(colored("\nEnter folder Id : ", 'light_blue')))
+                    print()
+                    file_name = input(colored("Enter file name you want to create: ", 'light_green'))
+                    file_content = input(colored("Enter file contents: ", 'light_green'))
 
-            payload = json.dumps({
-                "name": file_name,
-                "content": file_content
-                })
-            create_file_in_folder(access_token,folder_id,payload)
-            
-        elif choice_param == '3':
-            get_folders_list(access_token)
-            print()
-            folder_id = int(input(colored("Enter folder Id from which you want to delete file: ", 'red')))
-            print()
-            get_files_in_folders(access_token,folder_id)
-            print()
-            file_id = int(input(colored("Enter file Id which you want to delete: ", 'red')))
-            delete_file(access_token,folder_id,file_id)
-            
-        elif choice_param == '4':
-            get_folders_list(access_token)
-            folder_id = int(input(colored("\nEnter folder Id : ", 'light_blue')))
-            print()
-            get_files_in_folders(access_token,folder_id)
-            file_id = int(input(colored("Enter file id you want to update: ", 'light_green')))
-            print()
-            file_content = input(colored("Enter updated contents of file: ", 'light_green'))
+                    payload = json.dumps({
+                        "name": file_name,
+                        "content": file_content
+                        })
+                    create_file_in_folder(access_token,folder_id,payload)
+                    
+                elif choice_param == '3':
+                    get_folders_list(access_token)
+                    print()
+                    folder_id = int(input(colored("Enter folder Id from which you want to delete file: ", 'red')))
+                    print()
+                    get_files_in_folders(access_token,folder_id)
+                    print()
+                    file_id = int(input(colored("Enter file Id which you want to delete: ", 'red')))
+                    delete_file(access_token,folder_id,file_id)
+                    
+                elif choice_param == '4':
+                    get_folders_list(access_token)
+                    folder_id = int(input(colored("\nEnter folder Id : ", 'light_blue')))
+                    print()
+                    get_files_in_folders(access_token,folder_id)
+                    file_id = int(input(colored("Enter file id you want to update: ", 'light_green')))
+                    print()
+                    file_content = input(colored("Enter updated contents of file: ", 'light_green'))
 
-            payload = json.dumps({
-                "content": file_content
-                })
-            print()
-            update_file_in_folder(access_token,folder_id,file_id,payload)
-
-        
-    else:
-        exit(101)
-else:
-    exit(101)
+                    payload = json.dumps({
+                        "content": file_content
+                        })
+                    print()
+                    update_file_in_folder(access_token,folder_id,file_id,payload)
         
     
     
